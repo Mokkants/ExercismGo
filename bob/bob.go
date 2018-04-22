@@ -1,15 +1,21 @@
 // Package bob contains the voice of your inner teenager
 package bob
 
-import "regexp"
+import (
+	"regexp"
+	"strings"
+)
+
+var question = regexp.MustCompile(`\?$`)
+var yelling = regexp.MustCompile(`^[^a-z]*[A-Z]+[A-Z0-9\W\s]*\!?$`)
+var yellingQuestion = regexp.MustCompile(`^[A-Z\s]+\?$`)
+var nothingToSay = regexp.MustCompile(`^[\s]*$`)
 
 // Hey returns Bob's answer to what you told him
-var question = regexp.MustCompile(`\?$`)
-var yelling = regexp.MustCompile(`[^a-z]+\!?$`) // BUG: triggers from "1,2,3"
-var yellingQuestion = regexp.MustCompile(`[A-Z]+\?$`)
-var nothingToSay = regexp.MustCompile(`^$`)
-
 func Hey(remark string) string {
+
+	remark = strings.TrimSpace(remark)
+
 	answer := "Whatever."
 		switch  {
 		case yellingQuestion.MatchString(remark):
